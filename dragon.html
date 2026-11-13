@@ -74,9 +74,11 @@
     .fB  { fill: var(--body); }
     .fD  { fill: var(--dark); }
     .fBe { fill: var(--belly); }
+    .fH  { fill: var(--horn); }
     .sB  { stroke: var(--body); }
     .sD  { stroke: var(--dark); }
     .sBe { stroke: var(--belly); }
+    .sH  { stroke: var(--horn); }
 
     /* ---- controls ---- */
     .controls { display: flex; flex-direction: column; gap: 12px; align-items: center; }
@@ -101,17 +103,20 @@
       background: rgba(198, 166, 107, 0.16);
       box-shadow: 0 0 18px rgba(198, 166, 107, 0.2);
     }
-    .sw { display: flex; gap: 10px; }
-    .swatch {
-      width: 26px; height: 26px; border-radius: 50%;
-      border: 2px solid rgba(198, 166, 107, 0.25);
-      cursor: pointer; padding: 0;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    .cpick {
+      -webkit-appearance: none; appearance: none;
+      width: 36px; height: 36px; border: none; border-radius: 50%;
+      background: none; cursor: pointer; padding: 0;
+      transition: transform 0.2s ease;
     }
-    .swatch:hover { transform: scale(1.15); }
-    .swatch.on {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 2px rgba(198, 166, 107, 0.35), 0 0 14px rgba(198, 166, 107, 0.4);
+    .cpick:hover { transform: scale(1.12); }
+    .cpick::-webkit-color-swatch-wrapper { padding: 0; }
+    .cpick::-webkit-color-swatch {
+      border: 2px solid rgba(198, 166, 107, 0.55); border-radius: 50%;
+      box-shadow: 0 0 14px rgba(198, 166, 107, 0.25);
+    }
+    .cpick::-moz-color-swatch {
+      border: 2px solid rgba(198, 166, 107, 0.55); border-radius: 50%;
     }
 
     .navrow { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
@@ -232,49 +237,50 @@
         <!-- ==================== CHINESE DRAGON ==================== -->
         <g id="dragonCN" class="dragon on">
           <!-- serpentine body + belly -->
-          <path d="M288 178 C268 152 244 148 218 158 C196 166 182 168 166 180 C152 190 144 200 136 208"
+          <path d="M288 178 C262 148 228 144 202 156 C180 166 170 176 152 174 C136 172 126 162 130 148 C134 136 124 126 110 130"
                 fill="none" class="sB" stroke-width="27" stroke-linecap="round" />
-          <path d="M288 186 C268 161 244 156 218 166 C197 174 184 176 168 188 C155 197 148 205 141 213"
+          <path d="M286 186 C260 157 227 152 202 164 C182 174 173 182 156 181 C141 179 134 170 137 156 C140 145 132 137 118 139"
                 fill="none" class="sBe" stroke-width="9" stroke-linecap="round" />
           <!-- dorsal spikes -->
           <g class="fD">
-            <path d="M256 156 l4 -9 l4 9 Z" /><path d="M230 148 l4 -9 l4 9 Z" />
-            <path d="M204 150 l4 -9 l4 9 Z" /><path d="M180 158 l4 -9 l4 9 Z" />
-            <path d="M158 172 l4 -9 l4 9 Z" />
+            <path d="M260 152 l4 -9 l4 9 Z" /><path d="M234 146 l4 -9 l4 9 Z" />
+            <path d="M208 150 l4 -9 l4 9 Z" /><path d="M184 160 l4 -9 l4 9 Z" />
+            <path d="M162 168 l4 -9 l4 9 Z" /><path d="M140 152 l4 -9 l4 9 Z" />
+            <path d="M128 138 l4 -9 l4 9 Z" />
           </g>
           <!-- tail tuft -->
           <g class="mane" fill="none" stroke-linecap="round">
-            <path d="M136 208 q-14 -4 -22 -12" stroke="#c6a66b" stroke-width="4" />
-            <path d="M136 212 q-15 5 -24 3" stroke="#c6a66b" stroke-width="4" />
-            <path d="M136 210 q-16 -1 -25 -5" class="sBe" stroke-width="4" />
+            <path d="M110 130 q-14 -6 -21 -15" stroke="#c6a66b" stroke-width="4" />
+            <path d="M110 134 q-15 3 -24 0" stroke="#c6a66b" stroke-width="4" />
+            <path d="M110 132 q-16 -3 -25 -7" class="sBe" stroke-width="4" />
           </g>
           <!-- four limbs grabbing at clouds -->
           <g class="limb">
-            <path d="M238 172 q-6 15 2 26" fill="none" class="sB" stroke-width="7" stroke-linecap="round" />
-            <circle cx="241" cy="200" r="6" class="fB" />
-            <path d="M236 204 l-4 5 M241 206 l0 6 M246 204 l4 5" stroke="#d8cbb0" stroke-width="2.4" stroke-linecap="round" />
+            <path d="M240 170 q-6 15 2 26" fill="none" class="sB" stroke-width="7" stroke-linecap="round" />
+            <circle cx="243" cy="198" r="6" class="fB" />
+            <path d="M238 202 l-4 5 M243 204 l0 6 M248 202 l4 5" stroke="#d8cbb0" stroke-width="2.4" stroke-linecap="round" />
           </g>
           <g class="limb alt">
-            <path d="M222 166 q-8 13 -2 25" fill="none" class="sD" stroke-width="6" stroke-linecap="round" />
-            <circle cx="221" cy="192" r="5" class="fD" />
-            <path d="M217 195 l-4 5 M221 197 l0 6 M225 195 l4 5" stroke="#d8cbb0" stroke-width="2" stroke-linecap="round" />
+            <path d="M224 162 q-8 13 -2 25" fill="none" class="sD" stroke-width="6" stroke-linecap="round" />
+            <circle cx="223" cy="189" r="5" class="fD" />
+            <path d="M219 192 l-4 5 M223 194 l0 6 M227 192 l4 5" stroke="#d8cbb0" stroke-width="2" stroke-linecap="round" />
           </g>
           <g class="limb">
-            <path d="M164 184 q-6 15 2 26" fill="none" class="sB" stroke-width="7" stroke-linecap="round" />
-            <circle cx="167" cy="212" r="6" class="fB" />
-            <path d="M162 216 l-4 5 M167 218 l0 6 M172 216 l4 5" stroke="#d8cbb0" stroke-width="2.4" stroke-linecap="round" />
+            <path d="M152 178 q-6 15 2 26" fill="none" class="sB" stroke-width="7" stroke-linecap="round" />
+            <circle cx="155" cy="206" r="6" class="fB" />
+            <path d="M150 210 l-4 5 M155 212 l0 6 M160 210 l4 5" stroke="#d8cbb0" stroke-width="2.4" stroke-linecap="round" />
           </g>
           <g class="limb alt">
-            <path d="M150 176 q-8 13 -2 25" fill="none" class="sD" stroke-width="6" stroke-linecap="round" />
-            <circle cx="149" cy="202" r="5" class="fD" />
-            <path d="M145 205 l-4 5 M149 207 l0 6 M153 205 l4 5" stroke="#d8cbb0" stroke-width="2" stroke-linecap="round" />
+            <path d="M138 168 q-8 13 -2 25" fill="none" class="sD" stroke-width="6" stroke-linecap="round" />
+            <circle cx="137" cy="195" r="5" class="fD" />
+            <path d="M133 198 l-4 5 M137 200 l0 6 M141 198 l4 5" stroke="#d8cbb0" stroke-width="2" stroke-linecap="round" />
           </g>
           <!-- clouds she's grabbing -->
           <g fill="#f2efe8" opacity="0.8">
-            <g class="cloud" transform="translate(238,218)">
+            <g class="cloud" transform="translate(240,216)">
               <ellipse rx="15" ry="9" /><ellipse cx="11" cy="-5" rx="10" ry="8" /><ellipse cx="-11" cy="-4" rx="9" ry="7" />
             </g>
-            <g class="cloud c2" transform="translate(162,228)">
+            <g class="cloud c2" transform="translate(150,224)">
               <ellipse rx="14" ry="8" /><ellipse cx="10" cy="-5" rx="9" ry="7" /><ellipse cx="-10" cy="-4" rx="8" ry="6" />
             </g>
           </g>
@@ -301,7 +307,7 @@
             </g>
             <path d="M289 155 q7 -5 13 -3 M308 152 q7 -2 13 3" stroke="#c6a66b" stroke-width="2.6" fill="none" stroke-linecap="round" />
             <!-- deer antlers -->
-            <g class="horns" stroke="#c9b294" stroke-width="3.4" fill="none" stroke-linecap="round">
+            <g class="horns sH" stroke-width="3.4" fill="none" stroke-linecap="round">
               <path d="M294 153 C290 134 296 122 288 108" />
               <path d="M291 139 C283 133 279 125 279 115" />
               <path d="M293 126 C299 118 301 110 299 102" />
@@ -366,7 +372,7 @@
             <circle cx="215" cy="178" r="30" class="fB" />
             <ellipse cx="205" cy="166" rx="13" ry="9" fill="#ffffff" opacity="0.1" />
             <!-- long backward-swept horns -->
-            <g class="horns" fill="#d8cbb0">
+            <g class="horns fH">
               <path d="M200 152 C188 132 184 102 196 78 C194 104 202 126 208 148 Z" />
               <path d="M230 152 C242 132 246 102 234 78 C236 104 228 126 222 148 Z" />
             </g>
@@ -435,11 +441,11 @@
       </div>
       <div class="crow">
         <span class="lbl">Body</span>
-        <div class="sw" id="swBody"></div>
-      </div>
-      <div class="crow">
+        <input type="color" class="cpick" id="pickBody" value="#3f8f5f" aria-label="body color" />
         <span class="lbl">Belly</span>
-        <div class="sw" id="swBelly"></div>
+        <input type="color" class="cpick" id="pickBelly" value="#f2e6c8" aria-label="belly color" />
+        <span class="lbl">Horns</span>
+        <input type="color" class="cpick" id="pickHorn" value="#d8cbb0" aria-label="horn color" />
       </div>
     </div>
 
@@ -493,15 +499,14 @@
       const cn = document.getElementById('dragonCN');
       const no = document.getElementById('dragonNO');
 
-      const bodyColors = [
-        { c: '#3f8f5f', d: '#2c6b45' }, // emerald
-        { c: '#a8324a', d: '#7d2438' }, // crimson
-        { c: '#3f6fb8', d: '#2c4f8a' }, // sapphire
-        { c: '#7a4b9e', d: '#5a3578' }, // violet
-        { c: '#c46a3a', d: '#96502a' }, // ember
-        { c: '#3a3a50', d: '#26263a' }, // onyx
-      ];
-      const bellyColors = ['#f2e6c8', '#d4af6e', '#e8a0b4', '#9ec5e8', '#a4d8b8', '#e8e4da'];
+      // darken an arbitrary #rrggbb by factor f (for limb/spike shading)
+      const shade = (hex, f) => {
+        const n = parseInt(hex.slice(1), 16);
+        const r = Math.round(((n >> 16) & 255) * f);
+        const g = Math.round(((n >> 8) & 255) * f);
+        const b = Math.round((n & 255) * f);
+        return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+      };
 
       // option toggles (kind / horns / breath)
       function bindSeg(attr, apply) {
@@ -520,35 +525,16 @@
       bindSeg('horns', v => svg.dataset.horns = v);
       bindSeg('breath', v => svg.dataset.breath = v);
 
-      // color swatches
-      const swBody = document.getElementById('swBody');
-      bodyColors.forEach((b, i) => {
-        const b2 = document.createElement('button');
-        b2.type = 'button';
-        b2.className = 'swatch' + (i === 0 ? ' on' : '');
-        b2.style.background = b.c;
-        b2.setAttribute('aria-label', 'body color ' + (i + 1));
-        b2.addEventListener('click', () => {
-          swBody.querySelectorAll('.swatch').forEach(s => s.classList.remove('on'));
-          b2.classList.add('on');
-          svg.style.setProperty('--body', b.c);
-          svg.style.setProperty('--dark', b.d);
-        });
-        swBody.appendChild(b2);
+      // full color wheels — body (auto-derives the dark shade), belly, horns
+      document.getElementById('pickBody').addEventListener('input', e => {
+        svg.style.setProperty('--body', e.target.value);
+        svg.style.setProperty('--dark', shade(e.target.value, 0.72));
       });
-      const swBelly = document.getElementById('swBelly');
-      bellyColors.forEach((c, i) => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'swatch' + (i === 0 ? ' on' : '');
-        b.style.background = c;
-        b.setAttribute('aria-label', 'belly color ' + (i + 1));
-        b.addEventListener('click', () => {
-          swBelly.querySelectorAll('.swatch').forEach(s => s.classList.remove('on'));
-          b.classList.add('on');
-          svg.style.setProperty('--belly', c);
-        });
-        swBelly.appendChild(b);
+      document.getElementById('pickBelly').addEventListener('input', e => {
+        svg.style.setProperty('--belly', e.target.value);
+      });
+      document.getElementById('pickHorn').addEventListener('input', e => {
+        svg.style.setProperty('--horn', e.target.value);
       });
     })();
   </script>
