@@ -1,0 +1,1099 @@
+/* ============================================================================
+   style.css — "A Birthday in Another World"
+   Palette: #09090D #15151D #481B2B #C6A66B #A6A8B0 #EAE7E1
+   ========================================================================== */
+
+:root {
+  --ink: #09090d;
+  --coal: #15151d;
+  --wine: #481b2b;
+  --gold: #c6a66b;
+  --ash: #a6a8b0;
+  --bone: #eae7e1;
+  --serif-display: "Cinzel", Georgia, "Times New Roman", serif;
+  --serif-body: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--serif-body);
+  font-size: 19px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html.locked,
+html.locked body {
+  overflow: hidden;
+  height: 100%;
+  overscroll-behavior: none;
+}
+html.locked body {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+}
+
+::selection {
+  background: rgba(198, 166, 107, 0.3);
+  color: var(--bone);
+}
+
+:focus-visible {
+  outline: 1px solid var(--gold);
+  outline-offset: 4px;
+}
+
+.skip {
+  position: fixed;
+  top: -80px;
+  left: 16px;
+  z-index: 300;
+  padding: 10px 18px;
+  background: var(--coal);
+  border: 1px solid rgba(198, 166, 107, 0.4);
+  color: var(--bone);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: top 0.2s ease;
+}
+.skip:focus {
+  top: 12px;
+}
+
+/* ------------------------------------------------------------- backdrop -- */
+#sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  animation: grain-shift 9s steps(8) infinite;
+}
+@keyframes grain-shift {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-2%, 1%); }
+  40% { transform: translate(1%, -2%); }
+  60% { transform: translate(-1%, 2%); }
+  80% { transform: translate(2%, -1%); }
+}
+
+#progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 60;
+  background: linear-gradient(90deg, var(--wine), var(--gold));
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+
+/* WebGL unavailable → painted sky stands in for the scene. */
+html.no-webgl body {
+  background:
+    radial-gradient(1000px 620px at 30% 16%, rgba(200, 205, 220, 0.14), transparent 55%),
+    radial-gradient(1200px 700px at 50% 20%, rgba(72, 27, 43, 0.5), transparent 62%),
+    radial-gradient(800px 520px at 72% 82%, rgba(198, 166, 107, 0.08), transparent 60%),
+    var(--ink);
+}
+
+/* ---------------------------------------------------------------- loader */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 20px;
+  background: var(--ink);
+  transition: opacity 0.8s ease;
+}
+#loader.done {
+  opacity: 0;
+  pointer-events: none;
+}
+.loader-sigil {
+  width: 56px;
+  height: 56px;
+  color: var(--gold);
+  animation: sigil-pulse 1.6s ease-in-out infinite;
+}
+@keyframes sigil-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.96); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+#loader p {
+  font-family: var(--serif-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+/* --------------------------------------------------------------- opening */
+#opening {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 24px;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    rgba(9, 9, 13, 0.45),
+    rgba(9, 9, 13, 0.18) 70%
+  );
+  transition: opacity 0.7s ease, visibility 0.7s;
+}
+#opening.gone {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.open-line {
+  font-family: var(--serif-display);
+  font-weight: 600;
+  font-size: clamp(1.35rem, 4.6vw, 2.5rem);
+  letter-spacing: 0.12em;
+  color: var(--bone);
+  text-shadow: 0 0 30px rgba(198, 166, 107, 0.3);
+}
+.open-sub {
+  font-style: italic;
+  font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+  color: var(--ash);
+  margin: 18px 0 40px;
+}
+
+.nojs-note {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--bone);
+  font-size: 1.2rem;
+  padding: 24px;
+  text-align: center;
+}
+
+/* -------------------------------------------------------------- buttons -- */
+.btn {
+  font-family: var(--serif-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(198, 166, 107, 0.07);
+  border: 1px solid rgba(198, 166, 107, 0.6);
+  padding: 16px 38px;
+  cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+.btn:hover,
+.btn:focus-visible {
+  background: rgba(198, 166, 107, 0.18);
+  box-shadow: 0 0 30px rgba(198, 166, 107, 0.28);
+  color: #e6cf9e;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+a.btn {
+  display: inline-block;
+  text-decoration: none;
+}
+.btn-glow {
+  box-shadow: 0 0 22px rgba(198, 166, 107, 0.3);
+  animation: btn-breathe 3.2s ease-in-out infinite;
+}
+@keyframes btn-breathe {
+  0%, 100% { box-shadow: 0 0 18px rgba(198, 166, 107, 0.22); }
+  50% { box-shadow: 0 0 34px rgba(198, 166, 107, 0.42); }
+}
+
+.btn-ghost {
+  font-family: var(--serif-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(166, 168, 176, 0.8);
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(198, 166, 107, 0.3);
+  padding: 6px 2px;
+  cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+.btn-ghost:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  background: rgba(21, 21, 29, 0.6);
+  border: 1px solid rgba(198, 166, 107, 0.35);
+  border-radius: 50%;
+  color: var(--ash);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.icon-btn:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 18px rgba(198, 166, 107, 0.25);
+}
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+#soundBtn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 70;
+}
+#soundBtn[aria-pressed="true"] {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+/* ----------------------------------------------------------------- cursor */
+#cursorDot,
+#cursorRing {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 250;
+  pointer-events: none;
+  display: none;
+}
+body.has-cursor {
+  cursor: none;
+}
+body.has-cursor * {
+  cursor: none !important;
+}
+body.has-cursor #cursorDot {
+  display: block;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+body.has-cursor #cursorRing {
+  display: block;
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  border-radius: 50%;
+  border: 1px solid rgba(198, 166, 107, 0.55);
+  transition: width 0.25s ease, height 0.25s ease, margin 0.25s ease,
+    border-color 0.25s ease;
+}
+body.has-cursor #cursorRing.hot {
+  width: 54px;
+  height: 54px;
+  margin: -27px 0 0 -27px;
+  border-color: rgba(198, 166, 107, 0.9);
+}
+
+/* ----------------------------------------------------------------- dotnav */
+#dotnav {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 65;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.dot {
+  position: relative;
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid rgba(166, 168, 176, 0.6);
+  background: transparent;
+  transition: background 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+.dot.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  transform: scale(1.35);
+}
+.dot-tip {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--serif-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+.dot:hover .dot-tip,
+.dot:focus-visible .dot-tip {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------- typography */
+.kicker {
+  font-family: var(--serif-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 26px auto;
+}
+.ornament span {
+  display: block;
+  width: 72px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(198, 166, 107, 0.6));
+}
+.ornament span:last-child {
+  background: linear-gradient(90deg, rgba(198, 166, 107, 0.6), transparent);
+}
+.ornament i {
+  color: var(--gold);
+  font-style: normal;
+  font-size: 0.85rem;
+}
+
+.chapter-title {
+  font-family: var(--serif-display);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 4.6vw, 2.6rem);
+  letter-spacing: 0.08em;
+  color: var(--bone);
+  margin-top: 14px;
+}
+
+.hint {
+  margin-top: 26px;
+  font-family: var(--serif-display);
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(166, 168, 176, 0.7);
+}
+
+/* ----------------------------------------------------------------- layout */
+main {
+  position: relative;
+  z-index: 10;
+}
+
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  padding: 0 20px;
+}
+.hero-name {
+  font-family: var(--serif-body);
+  font-style: italic;
+  font-size: clamp(1.35rem, 4vw, 2.1rem);
+  color: var(--gold);
+  margin: 18px 0 4px;
+}
+.hero-title {
+  font-family: var(--serif-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 9vw, 5.6rem);
+  letter-spacing: 0.08em;
+  line-height: 1.12;
+  color: var(--bone);
+  text-shadow: 0 0 34px rgba(198, 166, 107, 0.28);
+}
+.hero-sub {
+  font-size: clamp(1.05rem, 2.6vw, 1.28rem);
+  font-style: italic;
+  color: var(--ash);
+  margin-top: 20px;
+  max-width: 36ch;
+}
+
+/* Scroll cue — a gold thread that pours downward, telling her to scroll. */
+.scroll-cue {
+  position: absolute;
+  bottom: calc(34px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.scroll-cue.cue-fade {
+  opacity: 0;
+}
+.cue-text {
+  font-family: var(--serif-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
+  animation: cue-breathe 2.4s ease-in-out infinite;
+}
+.cue-tail {
+  position: relative;
+  width: 1px;
+  height: 56px;
+  background: linear-gradient(rgba(198, 166, 107, 0), var(--gold));
+  overflow: visible;
+}
+.cue-tail i {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 9px;
+  height: 9px;
+  border-right: 1.5px solid var(--gold);
+  border-bottom: 1.5px solid var(--gold);
+  transform: translate(-50%, 0) rotate(45deg);
+  animation: cue-drop 1.7s ease-in-out infinite;
+}
+@keyframes cue-breathe {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+@keyframes cue-drop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -6px) rotate(45deg);
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 40px) rotate(45deg);
+  }
+}
+html.reduced .cue-text,
+html.reduced .cue-tail i {
+  animation: none;
+}
+
+.chapter {
+  padding: 16vh clamp(16px, 4vw, 40px);
+}
+
+.panel {
+  position: relative;
+  margin: 0 auto;
+  padding: clamp(46px, 7vw, 80px) clamp(22px, 5vw, 60px);
+  background: rgba(13, 13, 18, 0.6);
+  border: 1px solid rgba(198, 166, 107, 0.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+.panel.narrow { max-width: 780px; }
+.panel.wide { max-width: 1080px; }
+
+.prose {
+  margin-top: 26px;
+  text-align: center;
+}
+.prose.left {
+  text-align: left;
+}
+.prose p {
+  font-size: 1.14rem;
+  line-height: 1.9;
+  color: #d8d4cb;
+  margin-bottom: 1.2em;
+}
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+/* -------------------------------------------------------------- duo blocks */
+.panel.duo {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(28px, 5vw, 54px);
+  align-items: center;
+  text-align: left;
+}
+.panel.duo.flip .art-frame {
+  order: 2;
+}
+.art-frame {
+  margin: 0;
+}
+.art-frame img {
+  display: block;
+  width: 100%;
+  border: 1px solid rgba(198, 166, 107, 0.3);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+}
+.duo-text .kicker,
+.duo-text .chapter-title {
+  text-align: left;
+}
+
+/* ---------------------------------------------------------------- gallery */
+.shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px 24px;
+  margin-top: 46px;
+}
+.shot {
+  margin: 0;
+  background: rgba(21, 21, 29, 0.75);
+  border: 1px solid rgba(198, 166, 107, 0.3);
+  padding: 10px 10px 12px;
+  transform: rotate(var(--tilt, 0deg));
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.5);
+  animation: shot-float var(--float-dur, 6s) ease-in-out infinite;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+@keyframes shot-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -7px; }
+}
+.shot:hover {
+  transform: rotate(0deg) translateY(-6px);
+  border-color: rgba(198, 166, 107, 0.6);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  animation-play-state: paused;
+}
+.shot-frame {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: #0d0d13;
+  cursor: pointer;
+}
+.shot-frame img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  filter: saturate(0.92);
+}
+.shot figcaption {
+  padding: 12px 4px 4px;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ash);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------- lightbox */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  place-items: center;
+  padding: 5vh 5vw;
+  background: rgba(5, 5, 9, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.lightbox.show {
+  opacity: 1;
+}
+/* The `hidden` attribute loses to display:grid above — restore it, or the
+   invisible dialog covers the whole page and eats every click. */
+.lightbox[hidden] {
+  display: none;
+}
+.lightbox-fig {
+  margin: 0;
+  max-width: min(860px, 92vw);
+  text-align: center;
+}
+.lightbox-img {
+  max-width: 100%;
+  max-height: 78vh;
+  border: 1px solid rgba(198, 166, 107, 0.45);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+}
+.lightbox-cap {
+  margin-top: 18px;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--bone);
+}
+.lightbox-close {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+}
+
+/* ----------------------------------------------------------------- letter */
+.letter-paper {
+  position: relative;
+  margin-top: 42px;
+  text-align: left;
+  padding: clamp(38px, 6vw, 60px) clamp(24px, 5vw, 52px);
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(198, 166, 107, 0.1), transparent 55%),
+    linear-gradient(180deg, #181119, #120c14);
+  border: 1px solid rgba(198, 166, 107, 0.34);
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.45),
+    0 30px 60px rgba(0, 0, 0, 0.5);
+}
+.letter-paper::before {
+  /* Deckled inner edge. */
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(198, 166, 107, 0.14);
+  pointer-events: none;
+}
+.letter-heading {
+  font-family: var(--serif-body);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: var(--gold);
+  margin-bottom: 22px;
+}
+.letter-body p {
+  font-size: 1.16rem;
+  line-height: 1.9;
+  color: #e0dcd4;
+  white-space: pre-line;
+  min-height: 1.9em;
+  margin-bottom: 1.1em;
+}
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.02em;
+  margin-left: 2px;
+  vertical-align: -0.14em;
+  background: var(--gold);
+  animation: caret-blink 1s steps(1) infinite;
+}
+@keyframes caret-blink {
+  50% { opacity: 0; }
+}
+.letter-sign {
+  margin-top: 30px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.letter-sign.shown {
+  opacity: 1;
+  transform: none;
+}
+.sig-line {
+  font-style: italic;
+  font-size: 1.26rem;
+  color: var(--gold);
+}
+.sig-name {
+  font-family: var(--serif-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.16em;
+  color: #dcd8cf;
+  margin-top: 6px;
+}
+
+/* ------------------------------------------------------------------ cake */
+.cake-stage {
+  position: relative;
+  width: min(440px, 100%);
+  margin: 34px auto 0;
+}
+.cake-stage canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.cake-flames {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+/* A candle flame — teardrop of gold light, flickering on its own beat. */
+.flame {
+  position: absolute;
+  width: 15px;
+  height: 26px;
+  transform: translate(-50%, -88%);
+  border-radius: 50% 50% 46% 46% / 62% 62% 38% 38%;
+  background: radial-gradient(
+    ellipse at 50% 72%,
+    #fff8e0 0%,
+    #ffd98a 30%,
+    #f0a24a 58%,
+    rgba(240, 130, 60, 0) 78%
+  );
+  box-shadow: 0 0 14px 4px rgba(255, 190, 90, 0.45),
+    0 0 34px 10px rgba(255, 160, 60, 0.18);
+  transform-origin: 50% 92%;
+  animation: flame-flicker 0.72s ease-in-out var(--fd, 0s) infinite alternate;
+  transition: transform 0.22s ease-in, opacity 0.22s ease-in;
+}
+@keyframes flame-flicker {
+  0% {
+    transform: translate(-50%, -88%) scale(1) skewX(-2.5deg);
+  }
+  50% {
+    transform: translate(-50%, -90%) scale(1.06, 1.12) skewX(1.5deg);
+  }
+  100% {
+    transform: translate(-50%, -87%) scale(0.96, 0.94) skewX(3deg);
+  }
+}
+.flame.out {
+  animation: none; /* the flicker would override this transform */
+  transform: translate(-50%, -88%) scale(0.1, 0.05);
+  opacity: 0;
+}
+/* Smoke wisp where a flame used to be. */
+.smoke {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -90%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(190, 190, 200, 0.5), transparent 70%);
+  filter: blur(1px);
+  animation: smoke-rise 2s ease-out forwards;
+}
+@keyframes smoke-rise {
+  0% {
+    opacity: 0.85;
+    transform: translate(-50%, -90%) scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -260%) scale(2.1);
+  }
+}
+.cake-wish {
+  margin: 30px auto 0;
+  max-width: 40ch;
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--gold);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.cake-wish.shown {
+  opacity: 1;
+  transform: none;
+}
+.cake-actions {
+  margin-top: 34px;
+  display: flex;
+  justify-content: center;
+}
+html.reduced .flame {
+  animation: none;
+}
+html.reduced .smoke {
+  animation-duration: 0.3s;
+}
+
+/* ----------------------------------------------------------------- finale */
+.finale {
+  position: relative;
+  padding-top: 20vh;
+  padding-bottom: 20vh;
+}
+/* Golden pulse behind the section — DOM fallback feedback for the burst. */
+.finale::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 55%,
+    rgba(224, 184, 117, 0.5),
+    rgba(224, 184, 117, 0) 62%
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+.finale.skyflash::after {
+  animation: skyflash 1.8s ease-out;
+}
+@keyframes skyflash {
+  0% { opacity: 0; }
+  18% { opacity: 1; }
+  100% { opacity: 0; }
+}
+html.reduced .finale.skyflash::after {
+  animation-duration: 0.4s;
+}
+.finale-inner {
+  position: relative;
+  isolation: isolate;
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+}
+/* Soft dark pool behind the text so the giant moon can't wash it out. */
+.finale-inner::before {
+  content: '';
+  position: absolute;
+  inset: -14% -22%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(6, 6, 10, 0.8) 0%,
+    rgba(6, 6, 10, 0.52) 45%,
+    rgba(6, 6, 10, 0) 72%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+.finale-big {
+  font-family: var(--serif-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 9vw, 5.4rem);
+  letter-spacing: 0.1em;
+  color: var(--bone);
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.85), 0 0 44px rgba(198, 166, 107, 0.4);
+}
+.finale-mid {
+  font-size: clamp(1.15rem, 3vw, 1.5rem);
+  font-style: italic;
+  line-height: 1.8;
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.8);
+  color: #dcd8cf;
+  max-width: 46ch;
+  margin: 30px auto 0;
+}
+.finale-small {
+  font-family: var(--serif-display);
+  font-size: clamp(0.78rem, 2vw, 1rem);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 38px;
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.9);
+}
+.finale-actions .btn,
+.finale-actions .btn-ghost {
+  background: rgba(9, 9, 14, 0.55);
+  backdrop-filter: blur(4px);
+}
+.finale-actions {
+  margin-top: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ----------------------------------------------------------------- footer */
+footer {
+  padding: 60px 24px 90px;
+  text-align: center;
+  color: var(--ash);
+}
+footer p {
+  font-style: italic;
+  font-size: 1rem;
+}
+.foot-year {
+  margin-top: 10px;
+  font-family: var(--serif-display);
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  color: rgba(166, 168, 176, 0.55);
+}
+
+/* ---------------------------------------------------------------- reveals */
+html.anim .reveal,
+html.anim .reveal-hero,
+html.anim .shot,
+html.anim .finale-line {
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: transform, opacity;
+}
+
+/* ------------------------------------------------------- reduced motion -- */
+html.reduced *,
+html.reduced *::before,
+html.reduced *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+html.reduced .reveal,
+html.reduced .reveal-hero,
+html.reduced .shot,
+html.reduced .finale-line {
+  opacity: 1 !important;
+  transform: none !important;
+}
+html.reduced .grain,
+html.reduced .shot {
+  animation: none !important;
+}
+
+/* ----------------------------------------------------------------- mobile */
+@media (max-width: 860px) {
+  .panel.duo {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .panel.duo.flip .art-frame {
+    order: 0;
+  }
+  .duo-text .kicker,
+  .duo-text .chapter-title,
+  .prose.left {
+    text-align: center;
+  }
+}
+
+@media (max-width: 720px) {
+  body {
+    font-size: 17px;
+  }
+  .chapter {
+    padding: 12vh 14px;
+  }
+  .panel {
+    padding: 40px 20px;
+  }
+  .shots {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 12px;
+  }
+  .shot figcaption {
+    font-size: 0.92rem;
+  }
+  #dotnav {
+    right: 10px;
+    gap: 13px;
+  }
+}
+
+@media (max-width: 560px) {
+  #dotnav {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .shots {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ------------------------------------------------------------ iphone polish */
+/* Safari-on-iOS niceties: kill the gray tap flash, drop the double-tap zoom
+   delay on interactive elements, stop auto text-scaling in landscape, and
+   respect the notch/home-indicator safe areas. */
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+button,
+a {
+  touch-action: manipulation;
+}
+#soundBtn {
+  top: calc(18px + env(safe-area-inset-top, 0px));
+  right: calc(18px + env(safe-area-inset-right, 0px));
+}
+#dotnav {
+  right: calc(18px + env(safe-area-inset-right, 0px));
+}
+footer {
+  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+}
+.finale-actions .btn,
+.finale-actions .btn-ghost {
+  -webkit-backdrop-filter: blur(4px);
+}

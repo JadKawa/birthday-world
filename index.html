@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#09090D" />
+  <meta name="description" content="A cinematic dark-fantasy birthday world." />
+  <title>A Birthday in Another World</title>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 27 16 16 29 5 16Z' fill='%23481B2B' stroke='%23C6A66B' stroke-width='2'/%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- three@0.160.0 pinned; addons resolve under three/addons/ -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <!-- gsap@3.12.5 pinned -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <a class="skip" href="#realm">Skip to content</a>
+
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div id="progress" aria-hidden="true"></div>
+
+  <!-- Custom cursor (desktop only) -->
+  <div id="cursorDot" aria-hidden="true"></div>
+  <div id="cursorRing" aria-hidden="true"></div>
+
+  <!-- Sound toggle -->
+  <button id="soundBtn" class="icon-btn" type="button" aria-pressed="false" aria-label="Toggle ambient sound">
+    <svg class="ic-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z" fill="currentColor"/><path d="m17 8 5 8m0-8-5 8" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+    <svg class="ic-on" viewBox="0 0 24 24" hidden aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+  </button>
+
+  <!-- Dot navigation -->
+  <nav id="dotnav" aria-label="Sections"></nav>
+
+  <!-- Loading veil -->
+  <div id="loader" aria-hidden="true">
+    <svg class="loader-sigil" viewBox="0 0 64 64"><path d="M32 6 52 32 32 58 12 32Z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M32 20 42 32 32 44 22 32Z" fill="currentColor"/></svg>
+    <p>Opening the world…</p>
+  </div>
+
+  <!-- Opening overlay -->
+  <div id="opening" role="dialog" aria-modal="true" aria-labelledby="openLine1">
+    <div class="open-inner">
+      <p class="open-line" id="openLine1"></p>
+      <p class="open-sub" id="openLine2"></p>
+      <button id="enterBtn" class="btn btn-glow" type="button"></button>
+    </div>
+  </div>
+
+  <noscript>
+    <div class="nojs-note">This world needs JavaScript to open its gates.</div>
+  </noscript>
+
+  <main id="top">
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <p class="kicker reveal-hero" id="heroKicker"></p>
+      <p class="hero-name reveal-hero" id="heroName" hidden></p>
+      <h1 class="hero-title reveal-hero" id="heroTitle"></h1>
+      <div class="ornament reveal-hero" aria-hidden="true"><span></span><i>✦</i><span></span></div>
+      <p class="hero-sub reveal-hero" id="heroSub"></p>
+      <div class="scroll-cue" id="scrollCue" aria-hidden="true">
+        <span class="cue-text" id="scrollCueText"></span>
+        <span class="cue-tail"><i></i></span>
+      </div>
+    </section>
+
+    <!-- Chapter I — the dragon realm -->
+    <section id="realm" class="chapter">
+      <div class="panel narrow">
+        <p class="kicker reveal" id="realmKicker"></p>
+        <h2 class="chapter-title reveal" id="realmTitle"></h2>
+        <div class="prose" id="realmText"></div>
+        <p class="hint reveal" id="realmNote"></p>
+      </div>
+    </section>
+
+    <!-- Chapter II — her world -->
+    <section id="her" class="chapter">
+      <div class="panel wide duo">
+        <figure class="art-frame reveal"><img id="herArt" alt="" /></figure>
+        <div class="duo-text">
+          <p class="kicker reveal" id="herKicker"></p>
+          <h2 class="chapter-title reveal" id="herTitle"></h2>
+          <div class="prose left" id="herText"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter III — together -->
+    <section id="us" class="chapter">
+      <div class="panel wide duo flip">
+        <figure class="art-frame wide reveal"><img id="usArt" alt="" /></figure>
+        <div class="duo-text">
+          <p class="kicker reveal" id="usKicker"></p>
+          <h2 class="chapter-title reveal" id="usTitle"></h2>
+          <div class="prose left" id="usText"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter IV — memory hall -->
+    <section id="gallery" class="chapter">
+      <div class="panel wide">
+        <p class="kicker reveal" id="galleryKicker"></p>
+        <h2 class="chapter-title reveal" id="galleryTitle"></h2>
+        <div class="shots" id="galleryGrid"></div>
+      </div>
+    </section>
+
+    <!-- Chapter V — the cake -->
+    <section id="cake" class="chapter">
+      <div class="panel narrow cake-panel">
+        <p class="kicker reveal" id="cakeKicker"></p>
+        <h2 class="chapter-title reveal" id="cakeTitle"></h2>
+        <div class="cake-stage reveal">
+          <canvas id="cakeArt" width="640" height="600" role="img" aria-label="A dark fantasy birthday cake with twenty-one candles"></canvas>
+          <div class="cake-flames" id="cakeFlames" aria-hidden="true"></div>
+        </div>
+        <p class="cake-wish" id="cakeWish" hidden></p>
+        <div class="cake-actions">
+          <button id="blowBtn" class="btn" type="button"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter VI — the letter -->
+    <section id="letter" class="chapter">
+      <div class="panel narrow">
+        <p class="kicker reveal" id="letterKicker"></p>
+        <article class="letter-paper reveal">
+          <h2 class="letter-heading" id="letterHeading"></h2>
+          <div class="letter-body" id="letterBody" aria-live="polite"></div>
+          <div class="letter-sign" id="letterSign" hidden>
+            <p class="sig-line"></p>
+            <p class="sig-name" id="letterSignName"></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Finale -->
+    <section id="finale" class="chapter finale">
+      <div class="finale-inner">
+        <h2 class="finale-line finale-big" id="finaleLine1"></h2>
+        <p class="finale-line finale-mid" id="finaleLine2"></p>
+        <p class="finale-line finale-small" id="finaleLine3"></p>
+        <div class="finale-actions">
+          <button id="burstBtn" class="btn" type="button"></button>
+          <a id="scorpionBtn" class="btn" href="scorpion.html">Meet the 3aqrob</a>
+          <a id="penguinBtn" class="btn" href="penguin.html">Meet Batriqi</a>
+          <a id="huskyBtn" class="btn" href="husky.html">Meet Zoe</a>
+          <button id="replayBtn" class="btn-ghost" type="button"></button>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="ornament" aria-hidden="true"><span></span><i>✦</i><span></i></div>
+      <p id="footLine"></p>
+      <p class="foot-year" id="footYear"></p>
+    </footer>
+  </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button class="lightbox-close icon-btn" type="button" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <figure class="lightbox-fig">
+      <img class="lightbox-img" alt="" />
+      <figcaption class="lightbox-cap"></figcaption>
+    </figure>
+  </div>
+</body>
+</html>
