@@ -1,1 +1,4 @@
 cf-tunnel.log
+
+# Local Netlify folder
+.netlify

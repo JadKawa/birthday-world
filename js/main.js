@@ -104,6 +104,7 @@ function buildContent() {
   setText('#scorpionBtn', C.finale.scorpionLabel);
   setText('#penguinBtn', C.finale.penguinLabel);
   setText('#huskyBtn', C.finale.huskyLabel);
+  setText('#dragonBtn', C.finale.dragonLabel);
 
   setText('#footLine', C.footer.line);
   setText('#footYear', '· ' + new Date().getFullYear() + ' ·');

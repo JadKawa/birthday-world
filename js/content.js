@@ -142,6 +142,7 @@ May your world always have a little magic in it. May your heart always find its 
     scorpionLabel: "Meet the 3aqrob",
     penguinLabel: "Meet Batriqi",
     huskyLabel: "Meet Zoe",
+    dragonLabel: "Lamar's Dragon",
   },
 
   footer: {
